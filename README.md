@@ -25,6 +25,8 @@
 | `TonCV2.py` | OpenCV 的 RGB 读写小封装 |
 | `wind.py` | 多人信息展示控件（实验性，未接入） |
 | `data/` | 本地数据目录，未纳入版本库 |
+| `start.sh` | 应用启动脚本（后台运行，见“运行”） |
+| `stop.sh` | 应用停止脚本（见“运行”） |
 | `.idea/` | PyCharm 工程配置 |
 
 ## 架构说明
@@ -101,6 +103,22 @@ python main.py
 ```
 
 程序会打开一个 1120×630 的窗口，在左上角 960×540 的区域中逐帧显示图片。
+
+### 使用脚本启动和停止
+
+macOS / Linux 下可以使用仓库根目录的脚本在后台启动和停止应用：
+
+```bash
+./start.sh   # 后台启动应用
+./stop.sh    # 停止应用
+```
+
+- `start.sh` 默认优先使用项目根目录下的 `.venv/bin/python`，其次使用 PATH 中的 `python3`；也可以通过 `PYTHON_BIN=/path/to/python ./start.sh` 指定解释器。
+- 应用在后台运行，PID 写入 `.run/app.pid`，输出写入 `.run/app.log`；`.run/` 已被 `.gitignore` 忽略。
+- 启动后如果进程立即退出（例如缺少依赖、没有图形环境或 `data/` 未准备），脚本会打印日志末尾并以非零状态退出。
+- `stop.sh` 先发送 SIGTERM；若 `STOP_TIMEOUT` 秒（默认 10 秒）后仍未退出，则发送 SIGKILL 强制结束。
+
+Windows 下请直接运行 `python main.py`。
 
 ## 已知限制
 

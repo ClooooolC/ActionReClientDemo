@@ -1,4 +1,5 @@
 data/
+.run/
 *.pyc
 *.sqlite3
 doc/
